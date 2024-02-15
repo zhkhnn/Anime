@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stream/repos/repositories.dart';
 import 'package:stream/ui/home_page.dart';
 import 'service/firebase_options.dart';
 import 'ui/login_page.dart';
 import 'package:provider/provider.dart';
-import 'package:stream/bloc/anime_bloc.dart';
 import 'package:stream/ui/anime_list.dart';
 
 void main() async {
@@ -21,14 +22,45 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final isAuthed = false;
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AnimeListBloc(),
-      child: MaterialApp(
-        title: 'Anime App',
-        home: SafeArea(child: HomePage()),
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: RepositoryProvider(
+        create: (context) => AnimeRepo(),
+        child: SafeArea(
+          child: HomePage(),
+        ),
       ),
     );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _SplashState();
+}
+
+class _SplashState extends State<SplashScreen> {
+  final isAuthed = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (isAuthed) {
+      HomePage();
+    } else {
+      LoginPage(
+        isAuth: isAuthed,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

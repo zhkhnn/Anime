@@ -1,12 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream/models/anime.dart';
 import 'package:stream/ui/anime_detail.dart';
+
+import '../bloc/app_blocs.dart';
+import '../bloc/app_events.dart';
+import '../bloc/app_states.dart';
+import '../repos/repositories.dart';
 
 class AnimeCard extends StatelessWidget {
   final Anime anime;
   AnimeCard({required this.anime});
   @override
   Widget build(BuildContext context) {
+    // return BlocProvider(
+    //   create: (context) => AnimeBloc(
+    //     RepositoryProvider.of<AnimeRepo>(context),
+    //   )..add(LoadAnimeEvent()),
+    //   child: BlocBuilder<AnimeBloc, AnimeState>(
+    //     builder: (context, state) {
+    //       if (state is AnimeLoadingState) {
+    //         return Center(
+    //           child: CircularProgressIndicator(),
+    //         );
+    //       }
+    //       if (state is AnimeLoadedState) {
+    //         print('data loaded');
+    //         Anime anime = state.anime;
+    //         return AnimeDetailPage(anime: anime);
+    //       }
+    //       if (state is AnimeErrorState) {
+    //         return Center(
+    //           child: Text("error"),
+    //         );
+    //       }
+    //       return Container();
+    //     },
+    //   ),
+    // );
     return GestureDetector(
       onTap: () {
         Navigator.push(

@@ -9,6 +9,11 @@ class AnimeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      minLeadingWidth: 10,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      selectedTileColor: Colors.orange[100],
+      tileColor: Colors.blueAccent,
       title: Text(anime.title),
       onTap: () {
         Navigator.push(

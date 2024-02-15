@@ -36,4 +36,13 @@ class GoogleAuth {
       return false;
     }
   }
+
+  Future<User?> getCurrentUser() async {
+    try {
+      return _auth.currentUser;
+    } catch (error) {
+      print("Error getting current user: $error");
+      return null;
+    }
+  }
 }
