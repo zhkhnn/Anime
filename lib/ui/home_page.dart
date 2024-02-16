@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:stream/bloc/app_blocs.dart';
 import 'package:stream/bloc/app_events.dart';
 import 'package:stream/bloc/app_states.dart';
+import 'package:stream/di/injection.dart';
 import 'package:stream/repos/repositories.dart';
 import 'package:stream/ui/anime_list.dart';
-import 'package:stream/ui/home_container.dart';
 import 'package:stream/ui/profile_page.dart';
 import 'package:stream/ui/saved_anime_list.dart';
 import 'package:stream/widgets/anime_card.dart';
@@ -26,12 +26,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
+
+  late AnimeBloc bloc;
+
+  @override
+  void initState() {
+    bloc = getIt.get()..add(LoadAnimeEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AnimeBloc(
-        RepositoryProvider.of<AnimeRepo>(context),
-      )..add(LoadAnimeEvent()),
+      create: (context) => bloc,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Anime App'),

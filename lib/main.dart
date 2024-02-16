@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stream/di/injection.dart';
 import 'package:stream/repos/repositories.dart';
 import 'package:stream/ui/home_page.dart';
 import 'service/firebase_options.dart';
@@ -13,6 +14,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await injectGetIt();
+
   runApp(MyApp());
 }
 
@@ -28,11 +32,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: RepositoryProvider(
-        create: (context) => AnimeRepo(),
-        child: SafeArea(
-          child: HomePage(),
-        ),
+      home: SafeArea(
+        child: HomePage(),
       ),
     );
   }

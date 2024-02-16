@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:stream/di/injection.dart';
 import 'package:stream/ui/anime_list.dart';
 import '../bloc/app_blocs.dart';
 import '../bloc/app_events.dart';
@@ -8,13 +9,26 @@ import '../bloc/app_states.dart';
 import '../models/anime.dart';
 import '../repos/repositories.dart';
 
-class SearchAnime extends StatelessWidget {
+class SearchAnime extends StatefulWidget {
+  const SearchAnime({super.key});
+
+  @override
+  State<SearchAnime> createState() => _SearchAnimeState();
+}
+
+class _SearchAnimeState extends State<SearchAnime> {
+  late final AnimeBloc bloc;
+
+  @override
+  void initState() {
+    bloc = getIt.get()..add(LoadAnimeEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AnimeBloc(
-        RepositoryProvider.of<AnimeRepo>(context),
-      )..add(LoadAnimeEvent()),
+    return BlocProvider.value(
+      value: bloc,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -38,17 +52,6 @@ class SearchAnime extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16.0),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    'Search Results',
-                    style: TextStyle(color: Colors.white, fontSize: 35.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
               BlocBuilder<AnimeBloc, AnimeState>(
                 builder: (context, state) {
                   if (state is AnimeLoadedState) {
